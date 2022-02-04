@@ -15,7 +15,8 @@ function DetailPage(props){
   const cast = useQuery(["cast", movieId], () => fetchSingleMovieCredits(movieId));
   const recommendations = useQuery(["reData", movieId], () => fetchRecommendations(movieId));
   const reviews = useQuery(["review", movieId], () => fetchReviews(movieId));
-  console.log(reviews)
+  const {theme, setThemeName} = props;
+
   return <>
   <Container className="my-5">
     
@@ -38,7 +39,7 @@ function DetailPage(props){
         <h5 className="my-3">Cast</h5>
         <div className="d-flex flex-row flex-nowrap overflow-auto">
       {cast?.data?.data?.cast.slice(0,15).map(c => {
-        return <div class="card card-block col-md-2" >
+        return <div className={`card card-block col-md-2 ${theme.backgroundColor}`} >
         {(c.profile_path!==null && <img src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} className="card-img-top" alt="cast"/>)}
         <Text className="text-center my-1">{c.name} as {c.character}</Text>
       </div>    
@@ -52,7 +53,7 @@ function DetailPage(props){
       <h3>Reviews</h3>
       {reviews.data?.data?.results.slice(0,1).map(s => 
           <div class="card">
-          <div class="card-body">
+          <div className={`card-body ${theme.backgroundColor}`}>
             <Row>
             <Col md="auto">
             <img className="rounded-circle" src={`${s.author_details.avatar_path.slice(1)}`} alt="" />
@@ -70,7 +71,7 @@ function DetailPage(props){
       <h3>Recommendations</h3>
     <div className="d-flex flex-row flex-nowrap overflow-auto">
       {recommendations.data?.data?.results.map(r => {
-        return <div class="card card-block col-md-2" >
+        return <div className={`card card-block col-md-2 ${theme.backgroundColor}`} >
         {(r.poster_path!==null && <Link to={`/movies/${r.id}`}><img src={`https://image.tmdb.org/t/p/w500/${r.poster_path}`} className="card-img-top" alt="cast"/></Link>)}
         <Text className="text-center my-1">{r.title} </Text>
       </div>    

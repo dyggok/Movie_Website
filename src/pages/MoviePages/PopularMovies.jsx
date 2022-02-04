@@ -15,29 +15,31 @@ function PopularMovies(){
   const [date, setDate] = useState([]);
   const [genres, setGenres] = useState([]);
   const [sample, setSample] = useState([]);
-
+  const [url, setUrl] = useState(`${BASE_URL}/movie/popular?api_key=${api_key}`)
+  
   useEffect(() => {
-    fetch(`${BASE_URL}/movie/popular?api_key=${api_key}&page=${page}`)
+    fetch(`${url}&page=${page}`)
     .then(res => res.json()).then(data => {
       setPlayerData(data?.results)
       setSample(data?.results)
     })
   }, [])
 
-  useEffect(() => {
-    fetch(`${BASE_URL}/movie/popular?api_key=${api_key}&page=${page}`)
-    .then(res => res.json()).then(data => {
-      setPlayerData(playerData.concat(data?.results))
-      setSample(sample.concat(data?.results))
-    })
-  }, [page])
+   useEffect(() => {
+     fetch(`${url}&page=${page}`)
+     .then(res => res.json()).then(data => {
+       setPlayerData(playerData.concat(data?.results))
+       setSample(sample.concat(data?.results))
+     })
+   }, [page])
 
-  useEffect(() => {
-    (genres !== "" && 
-      setPlayerData(sample.filter(p => p.genre_ids.some(genre => genres.includes(genre))))
-    )
-
-  }, [genres])
+   useEffect(() => {
+     fetch(`${url}&page=${page}`)
+     .then(res => res.json()).then(data => {
+       setPlayerData(data?.results)
+       setSample(sample.concat(data?.results));
+     })
+   }, [url])
   
   useEffect(() => {
     if(sortAction == 'Sort by A-Z'){
@@ -71,7 +73,7 @@ function PopularMovies(){
           return<>
           <Col  md={2} key={item.id} >
           <div className="card col mt-3" >
-          <Link to="/"><img src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} className="card-img-top" alt="poster"/></Link>
+          <Link to={`/movies/${item.id}`}><img src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} className="card-img-top" alt="poster"/></Link>
         </div>
         </Col>
         <Col></Col>
@@ -81,7 +83,7 @@ function PopularMovies(){
            () => {
             setPage(page + 1);
             }
-           } className="btn-lg my-4">Load More..</Button>
+           } className="btn-lg btn-secondary my-4">Load More..</Button>
       </Row>
     </>
   )

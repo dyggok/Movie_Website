@@ -9,18 +9,17 @@ function ProfilePage(props) {
   const [duplicate, setDuplicate] = useState(user[0]?.seenList?.seenFilms.filter(({movieId: seenId}) => user[0]?.favorites?.favoriteFilms.some(({movieId: favId}) => favId == seenId)).map(d => ({...d, action: "duplicate"})));
   const [table, setTable] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {theme} = props;
 
   useEffect(() => {
     setTimeout(() => {
       setTable(seenMovie.concat(favMovie, duplicate));
       setLoading(false)}, 500)
-    
   }, [])
 
   function renderAction(s){
     console.log(s)
     if(s.action == 'watched'){
-      console.log('merebeeee')
       return <><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fda403" className="bi bi-bookmark-fill" viewBox="0 0 16 16">
       <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
       </svg> <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="grey" className="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -72,7 +71,7 @@ function ProfilePage(props) {
   <Container>
     {user.map(u => 
           <div class="card my-5">
-          <div class="card-body">
+          <div class={`card-body ${theme.backgroundColor} ${theme.color}`}>
             <Row>
             <Col md="auto">
             <img className="rounded-circle" src={u.avatarUrl} alt="" />
@@ -91,7 +90,7 @@ function ProfilePage(props) {
   <Container>
     <div className="col-md-4 my-5">
     <h3>Filter By</h3>
-    <select class="form-select" onChange={(e) => optionHandler(e)}>
+    <select class="form-select" onChange={(e) => optionHandler(e)} >
       <option value="all list" selected>all list</option>
       <option value="fav">favorites</option>
       <option value="watched">seenlist</option>
@@ -99,7 +98,7 @@ function ProfilePage(props) {
     </div>
   </Container>
   <Container>
-    <table className="table my-5">
+    <table className={`table my-5  ${theme.backgroundColor} ${theme.color}`}>
   <thead>
     <tr>
       <th scope="col">Film ID</th>

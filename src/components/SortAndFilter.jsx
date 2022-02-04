@@ -8,11 +8,12 @@ import { fetchGenres } from "../api";
 import { useDispatch } from "react-redux";
 
 function SortAndFilter(props){
-  const {sortAction, setSortAction, setIsSorting, setDate, setGenres} = props;
+  const {sortAction, setSortAction, setIsSorting, setDate, setGenres, url, setUrl} = props;
   const {isLoading, isError, error, data, isFetched, isFetching, ...query} = useQuery('genres', fetchGenres)
-  const [filtercheck, setFilterCheck] = useState(false);
+  const [filtercheck, setFilterCheck] = useState(url);
   const dispatch = useDispatch();
-  const genres = [];
+  let genres = [];
+  let date = [];
   const options = [
   {value: "0", label: ""},
   {value: "1", label: "Sort by A-Z"},
@@ -47,12 +48,25 @@ function SortAndFilter(props){
   }
 
   function filterHandler(){
-    setDate([document.getElementsByName('from')[0].value, document.getElementsByName('to')[0].value])
-    setGenres(genres)
+    if(document.getElementsByName('from')[0].value !== null && genres == null){
+      date.push(document.getElementsByName('from')[0].value)
+      date.push(document.getElementsByName('to')[0].value)
+      setUrl(filtercheck.concat('&primary_release_date.gte=' + date[0] + '&primary_release_date.lte='+ date[1]))
+      date.splice(0)
+    }else if(genres !== null && document.getElementsByName('from')[0].value == null){
+      setUrl(filtercheck.concat(genres.join('')))
+      genres.splice(0)
+    }
+    else{
+      date.push(document.getElementsByName('from')[0].value)
+      date.push(document.getElementsByName('to')[0].value)
+      setUrl(filtercheck.concat('&primary_release_date.gte=' + date[0] + '&primary_release_date.lte='+ date[1]).concat(genres.join('')))
+      date.splice(0)
+      genres.splice(0)
+    }
   }
-
   function filterCheckHandler(e){
-    genres.push(parseInt(e.target.id))
+    genres.push("&with_genres=" + e.target.id)
   }
   return   <SideBar className="m-3 ">
     <Container className="border border-dark" style={{"height" : "250px"}}>

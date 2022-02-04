@@ -13,7 +13,7 @@ function Login(props){
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
   const navigate = useNavigate();
-
+  const {theme} = props;
   function loginHandler(e){
     e.preventDefault();
     dispatch(login(username, password))
@@ -40,7 +40,7 @@ function Login(props){
   return <>
   <Container>
     <Row>
-    <div className="card col-md-4 mx-auto my-5">
+    <div className={`card col-md-4 mx-auto my-5 border-secondary ${theme.backgroundColor} `}>
       <form className="m-5" onSubmit={(e) => loginHandler(e)}>
         <h3 className="my-5 text-center">Login</h3>
         <div className="form-group" >

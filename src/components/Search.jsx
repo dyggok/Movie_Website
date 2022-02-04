@@ -11,7 +11,7 @@ const List = styled.ul`
   z-index: 999;
   margin-top: 38px;
 `
-function Search(){
+function Search(props){
   const location = useLocation();
   const navigate = useNavigate();
   const [offset, setOffset] = useState(0);
@@ -23,7 +23,7 @@ function Search(){
   const [sample, setSample] = useState([])
   const [inputBoolean, setInputBoolean] = useState(false);
   const [query, setQuery] = useState("");
- 
+  const {theme, setThemeName} = props;
   
   function inputHandler(e){
     console.log(e.target.value)
@@ -65,7 +65,6 @@ function Search(){
       }))
   }, [location.pathname])
 
-  console.log(q)
   return<>
   <form className="input-group w-50 mx-auto my-5" onSubmit={(e) => formHandler(e)}>
     <button className="input-group-text" type="submit" id="basic-addon1" >
@@ -84,9 +83,9 @@ function Search(){
      <Row> {
       searchData?.slice(offset, offset + perPage).map(s => {
       return <Col md={2} className="mx-auto">
-      <div className="card card-block h-100">
+      <div className={`card card-block h-100 ${theme.backgroundColor}`}>
         {(s.poster_path!==null && <Link to={`/movies/${s.id}`}><img src={`https://image.tmdb.org/t/p/w500/${s.poster_path}`} class="card-img-top" alt="..."/></Link>)}
-        <div className="card-body">
+        <div className={`card-body ${theme.color}`}>
           <p className="card-title">{s.title}</p>
         </div>
       </div>
