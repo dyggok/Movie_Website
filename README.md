@@ -1,6 +1,6 @@
 # The Movie Website 🎦
 
-<img src="https://media.giphy.com/media/3o7aD7TFLsZjgzXrZS/giphy.gif" align="right">
+<img src="https://media.giphy.com/media/3o7aD7TFLsZjgzXrZS/giphy.gif" align="right" width="400">
 
 ▶️ It is a project where we can see the promotion of the movies and the details of the selected movie like IMDB or TMDB. 
 
